@@ -14,9 +14,14 @@ class ExpenseController extends Controller
     {
         try {
             $expenses = Expense::with('category')->get();
-            return ApiResponse::success(ExpenseResource::collection($expenses), "Expense list fetched successfully.");
+            return ApiResponse::success(
+                ExpenseResource::collection($expenses), 
+                "Expense list fetched successfully."
+            );
         } catch (Exception $e) {
-            return ApiResponse::error("Failed to fetch expenses: " . $e->getMessage());
+            return ApiResponse::error(
+                "Failed to fetch expenses: " . $e->getMessage()
+            );
         }
     }
 
@@ -24,18 +29,28 @@ class ExpenseController extends Controller
     {
         try {
             $expense = Expense::create($request->validated());
-            return ApiResponse::success(new ExpenseResource($expense->load('category')), "Expense added successfully.");
+            return ApiResponse::success(
+                new ExpenseResource($expense->load('category')), 
+                "Expense added successfully."
+            );
         } catch (Exception $e) {
-            return ApiResponse::error("Failed to create expense: " . $e->getMessage());
+            return ApiResponse::error(
+                "Failed to create expense: " . $e->getMessage()
+            );
         }
     }
 
     public function show(Expense $expense)
     {
         try {
-            return ApiResponse::success(new ExpenseResource($expense->load('category')), "Expense details fetched.");
+            return ApiResponse::success(
+                new ExpenseResource($expense->load('category')), 
+                "Expense details fetched."
+            );
         } catch (Exception $e) {
-            return ApiResponse::error("Failed to fetch expense details: " . $e->getMessage());
+            return ApiResponse::error(
+                "Failed to fetch expense details: " . $e->getMessage()
+            );
         }
     }
 
@@ -43,7 +58,10 @@ class ExpenseController extends Controller
     {
         try {
             $expense->update($request->validated());
-            return ApiResponse::success(new ExpenseResource($expense->load('category')), "Expense updated successfully.");
+            return ApiResponse::success(
+                new ExpenseResource($expense->load('category')), 
+                "Expense updated successfully."
+            );
         } catch (Exception $e) {
             return ApiResponse::error("Failed to update expense: " . $e->getMessage());
         }
