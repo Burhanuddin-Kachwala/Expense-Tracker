@@ -4,6 +4,7 @@ import { getExpenses } from '../features/expenseSlice';
 import ExpensePieChart from './ExpensePieChart';
 import ExpensesCard from './ExpensesCard';
 import AddExpenseModal from './modals/expense/AddExpenseModal';
+import DownloadButton from './buttons/DownloadButton ';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function Dashboard() {
     <div className="mt-3 p-3 max-w-auto mx-auto bg-white rounded-lg shadow-lg">
      
         <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
-       
+        <DownloadButton expenses={expenses}/>
       
       <div className="flex gap-4">
         <div className="w-1/3 p-2">

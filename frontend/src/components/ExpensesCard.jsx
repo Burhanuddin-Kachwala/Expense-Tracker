@@ -4,6 +4,7 @@ import EditButton from "./buttons/EditButton";
 import EditExpenseModal from "./modals/expense/EditExpenseModal";
 
 function ExpensesCard({ expenses }) {
+  console.log(expenses);
   const [editingExpense, setEditingExpense] = useState(null);
   return (
     <div>

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import axiosClient from "../axiosClient";
 //fetch all
 export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thunkAPI) => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/expenses');
+        const response = await axiosClient.get('http://127.0.0.1:8000/api/expenses');
         // console.log(response.data.data);
         return response.data.data;
     } catch (error) {
@@ -14,7 +15,7 @@ export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thu
 //add
  export const addExpense = createAsyncThunk("expense/addExpense", async (expenseData, thunkAPI) => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/expenses", expenseData);
+      const response = await axiosClient.post("http://127.0.0.1:8000/api/expenses", expenseData);
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || "Error adding expense");
@@ -25,7 +26,7 @@ export const removeExpense = createAsyncThunk(
     "expense/removeExpense",
     async (id, thunkAPI) => {     
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/expenses/${id}`);
+            await axiosClient.delete(`http://127.0.0.1:8000/api/expenses/${id}`);
             return { id: id };
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data || "Error removing expense");
@@ -38,7 +39,7 @@ export const editExpense = createAsyncThunk(
     async (updatedExpense, thunkAPI) => {
       const { id, ...data } = updatedExpense;
       try {
-        const response = await axios.put(`http://127.0.0.1:8000/api/expenses/${id}`, data);
+        const response = await axiosClient.put(`http://127.0.0.1:8000/api/expenses/${id}`, data);
         return response.data.data;
       } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data || "Error updating expense");
