@@ -1,15 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
 export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thunkAPI) => {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/expenses');
-        console.log(response.data.data);
+        // console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data);
     }
 });
-
+// At the top
+ export const addExpense = createAsyncThunk("expense/addExpense", async (expenseData, thunkAPI) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/expenses", expenseData);
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || "Error adding expense");
+    }
+  });
+  
 
 const intialState = {
     expenses: [],
@@ -23,9 +33,7 @@ const expenseSlice = createSlice({
     name: "expense",
     initialState: intialState,
     reducers: {
-        addExpense: (state, action) => {
-            state.expenses.push(action.payload);
-        },
+       
         removeExpense: (state, action) => {
             state.expenses = state.expenses.filter(expense => expense.id !== action.payload.id);
         },
@@ -38,20 +46,33 @@ const expenseSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase("FETCH_EXPENSES_REQUEST", (state) => {
+            .addCase(getExpenses.pending, (state) => {
                 state.isloading = true;
-            })
-            .addCase("FETCH_EXPENSES_SUCCESS", (state, action) => {
-                state.isloading = false;
-                state.expenses = action.payload;
                 state.error = null;
             })
-            .addCase("FETCH_EXPENSES_FAILURE", (state, action) => {
+            .addCase(getExpenses.fulfilled, (state, action) => {
+                state.isloading = false;
+                state.expenses = action.payload;
+            })
+            .addCase(getExpenses.rejected, (state, action) => {
                 state.isloading = false;
                 state.error = action.payload;
-            });
+            })
+            .addCase(addExpense.pending, (state) => {
+                // state.isloading = true;
+                state.error = null;
+              })
+              .addCase(addExpense.fulfilled, (state, action) => {
+                state.isloading = false;
+                state.expenses.push(action.payload);
+              })
+              .addCase(addExpense.rejected, (state, action) => {
+                state.isloading = false;
+                state.error = action.payload;
+              });
     }
+    
 });
 
-export const  {addExpense,removeExpense,setLoading,setError} = expenseSlice.actions;
+export const  {removeExpense,setLoading,setError} = expenseSlice.actions;
 export default expenseSlice.reducer;
