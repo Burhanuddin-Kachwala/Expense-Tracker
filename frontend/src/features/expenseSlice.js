@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+//fetch all
 export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thunkAPI) => {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/expenses');
@@ -10,7 +10,8 @@ export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thu
         return thunkAPI.rejectWithValue(error.response.data);
     }
 });
-// At the top
+
+//add
  export const addExpense = createAsyncThunk("expense/addExpense", async (expenseData, thunkAPI) => {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/expenses", expenseData);
@@ -19,6 +20,31 @@ export const getExpenses = createAsyncThunk("expense/getExpenses", async (_, thu
       return thunkAPI.rejectWithValue(error.response?.data || "Error adding expense");
     }
   });
+  //delete
+export const removeExpense = createAsyncThunk(
+    "expense/removeExpense",
+    async (id, thunkAPI) => {     
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/expenses/${id}`);
+            return { id: id };
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response?.data || "Error removing expense");
+        }
+    }
+);
+//edit
+export const editExpense = createAsyncThunk(
+    "expense/editExpense",
+    async (updatedExpense, thunkAPI) => {
+      const { id, ...data } = updatedExpense;
+      try {
+        const response = await axios.put(`http://127.0.0.1:8000/api/expenses/${id}`, data);
+        return response.data.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response?.data || "Error updating expense");
+      }
+    }
+  );
   
 
 const intialState = {
@@ -34,11 +60,8 @@ const expenseSlice = createSlice({
     initialState: intialState,
     reducers: {
        
-        removeExpense: (state, action) => {
-            state.expenses = state.expenses.filter(expense => expense.id !== action.payload.id);
-        },
-        setLoading: (state, action) => {
-            state.isloading = action.payload;
+         setLoading: (state, action) => {
+          state.isloading = action.payload;
         },
         setError: (state, action) => {
             state.error = action.payload;
@@ -60,7 +83,7 @@ const expenseSlice = createSlice({
             })
             .addCase(addExpense.pending, (state) => {
                 // state.isloading = true;
-                state.error = null;
+                state.error = null;                
               })
               .addCase(addExpense.fulfilled, (state, action) => {
                 state.isloading = false;
@@ -69,10 +92,27 @@ const expenseSlice = createSlice({
               .addCase(addExpense.rejected, (state, action) => {
                 state.isloading = false;
                 state.error = action.payload;
+              })
+              .addCase(removeExpense.fulfilled, (state, action) => {
+                state.expenses = state.expenses.filter(
+                  (expense) => expense.id !== action.payload.id
+                );
+              })
+              .addCase(removeExpense.rejected, (state, action) => {
+                state.error = action.payload;
+              })
+              .addCase(editExpense.fulfilled, (state, action) => {
+                const index = state.expenses.findIndex(exp => exp.id === action.payload.id);
+                if (index !== -1) {
+                  state.expenses[index] = action.payload;
+                }
+              })
+              .addCase(editExpense.rejected, (state, action) => {
+                state.error = action.payload;
               });
     }
     
 });
 
-export const  {removeExpense,setLoading,setError} = expenseSlice.actions;
+export const  {setLoading,setError} = expenseSlice.actions;
 export default expenseSlice.reducer;

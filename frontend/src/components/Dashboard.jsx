@@ -8,7 +8,7 @@ import AddExpenseModal from './modals/expense/AddExpenseModal';
 function Dashboard() {
   const dispatch = useDispatch();
   const { expenses, isloading, error } = useSelector((state) => state.expense);
-  const [showModal, setShowModal] = useState(false);
+   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     dispatch(getExpenses());
   }, [dispatch]);
