@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class PdfController extends Controller
         $expenses = $request->input('expenses', []);
     
         if (empty($expenses)) {
-            return response()->json(['error' => 'No expenses provided'], 400);
+            return ApiResponse::error("No Expense provided");
         }
     
         $pdf = Pdf::loadView('pdf.expenses', ['expenses' => $expenses]);
