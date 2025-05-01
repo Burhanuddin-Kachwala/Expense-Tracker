@@ -4,8 +4,8 @@ import Header from './header/Header'
 
 function Layout() {
   return <>
-  <Header/>
-  <Outlet/>
+    <Header/>
+    <Outlet/>
   </>
     
   

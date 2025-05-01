@@ -33,7 +33,7 @@ function ExpensesCard({ expenses }) {
               </p>
               <p className="text-sm text-gray-600">Date: {expense.date}</p>
               <p className="text-xl font-bold text-green-600 mt-2">
-                ₹{expense.amount}
+                ₹ {expense.amount}
               </p>
             </div>
           ))}

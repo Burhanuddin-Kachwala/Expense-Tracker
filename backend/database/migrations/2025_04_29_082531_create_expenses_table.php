@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->string('description');
             $table->date('date');
             $table->timestamps();
-
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }

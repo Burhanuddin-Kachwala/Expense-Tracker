@@ -1,6 +1,6 @@
 // src/components/ExpensePieChart.jsx
 import React from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie,Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);

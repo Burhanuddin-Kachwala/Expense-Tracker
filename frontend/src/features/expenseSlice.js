@@ -83,7 +83,7 @@ const expenseSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(addExpense.pending, (state) => {
-                // state.isloading = true;
+                state.isloading = true;
                 state.error = null;                
               })
               .addCase(addExpense.fulfilled, (state, action) => {

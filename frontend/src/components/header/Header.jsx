@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router'
+import { isLoggedIn } from '../../app/helper/auth'
+import LogoutBtn from '../buttons/LogoutBtn'
 
 function Header() {
 return (
@@ -26,6 +28,13 @@ return (
                     >
                         <li className="cursor-pointer">Dashboard</li>
                     </NavLink>
+                    {isLoggedIn() && (
+                        <NavLink                           
+                            className="text-blue-600 hover:text-blue-800"                        
+                        >
+                            <LogoutBtn/>
+                        </NavLink>
+                    )}
                 </ul>
             </div>
         </div>
