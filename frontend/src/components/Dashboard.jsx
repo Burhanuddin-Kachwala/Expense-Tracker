@@ -9,6 +9,7 @@ import { isLoggedIn } from '../app/helper/auth';
 import { Link } from 'react-router';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import DashboardSkeleton from './skeleton/DashboardSkeleton';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -21,10 +22,7 @@ function Dashboard() {
   }, [dispatch]);
   if (isloading) {
     return (
-      <div>
-      <Skeleton height={30} width={200} />
-      <Skeleton count={3} />
-    </div>
+      <DashboardSkeleton/>
     );
   }
   if (error) return <div>Error: {error}</div>;
