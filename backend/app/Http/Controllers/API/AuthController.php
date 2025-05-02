@@ -50,6 +50,9 @@ public function logout(Request $request)
     try {
         // Revoke the token that was used to authenticate the current request
         $request->user()->currentAccessToken()->delete();
+        auth()->guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return ApiResponse::success([], 'Logged out successfully.');
     } catch (\Exception $e) {

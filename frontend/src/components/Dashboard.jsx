@@ -7,7 +7,6 @@ import AddExpenseModal from './modals/expense/AddExpenseModal';
 import DownloadButton from './buttons/DownloadButton ';
 import { isLoggedIn } from '../app/helper/auth';
 import { Link } from 'react-router';
-import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import DashboardSkeleton from './skeleton/DashboardSkeleton';
 
